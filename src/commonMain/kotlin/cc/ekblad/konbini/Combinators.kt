@@ -114,8 +114,12 @@ inline fun <T, S> ParserState.chain1(crossinline p: Parser<T>, crossinline separ
         val tail = many {
             separator() to p()
         }
-        val (separators, terms) = tail.unzip()
-        (terms as MutableList<T>).add(0, head)
+        val separators = mutableListOf<S>()
+        val terms = mutableListOf<T>(head)
+        for ((s, t) in tail) {
+            separators.add(s)
+            terms.add(t)
+        }
         Chain(terms, separators)
     }
 
