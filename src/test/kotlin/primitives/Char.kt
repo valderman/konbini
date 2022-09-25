@@ -4,6 +4,7 @@ import cc.ekblad.konbini.ParserResult
 import cc.ekblad.konbini.char
 import cc.ekblad.konbini.parse
 import cc.ekblad.konbini.parser
+import kotlin.Char
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
@@ -34,21 +35,20 @@ class Char {
 
     @Test
     fun `can not parse the next char if it is the wrong one`() {
-        val p = parser {
-            char('a', 'b', 'c')
-            kotlin.test.fail("Parser didn't fail.")
-        }
-        val result = p.parse("xyz")
+        val result = char('a', 'b', 'c').parse("xyz")
         assertIs<ParserResult.Error<*>>(result)
     }
 
     @Test
     fun `can not parse the next char if there isn't one`() {
-        val p = parser {
-            char()
-            kotlin.test.fail("Parser didn't fail.")
-        }
-        val result = p.parse("")
+        val result = char.parse("")
         assertIs<ParserResult.Error<*>>(result)
+    }
+
+    @Test
+    fun `char without arguments accepts any char`() {
+        val result = char().parse("xyz")
+        assertIs<ParserResult.Ok<Char>>(result)
+        assertEquals('x', result.result)
     }
 }

@@ -38,4 +38,10 @@ class Integer {
             assertIs<ParserResult.Error<Long>>(integer.parse(number))
         }
     }
+
+    @Test
+    fun `can not parse garbage too large or too small number as integer`() {
+        assertIs<ParserResult.Error<Long>>(integer.parse("1000000000000000000000000000"))
+        assertIs<ParserResult.Error<Long>>(integer.parse("-1000000000000000000000000000"))
+    }
 }

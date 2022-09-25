@@ -38,7 +38,7 @@ class DoubleQuotedString {
 
     @Test
     fun `can not parse garbage as quoted string`() {
-        listOf("\"\"\"", "'''", "''", "$123", "", "xyz", "x10", "ff", "e3").forEach { str ->
+        listOf("'''", "''", "$123", "", "xyz", "x10", "ff", "e3").forEach { str ->
             assertIs<ParserResult.Error<String>>(doubleQuotedString.parse(str))
         }
     }

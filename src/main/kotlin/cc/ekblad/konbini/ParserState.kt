@@ -50,6 +50,7 @@ sealed interface ParserState {
 /**
  * Used internally to signal parser failure, initiating backtracking.
  */
+@PublishedApi
 internal class FailException(var reason: String, var position: Int) : RuntimeException()
 
 internal class StringParserState(private val input: String) : ParserState {

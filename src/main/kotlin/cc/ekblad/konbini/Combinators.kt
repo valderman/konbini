@@ -27,54 +27,15 @@ inline fun <T, U> Parser<T>.map(crossinline f: (T) -> U): Parser<U> =
 
 /**
  * Create a parser that performs the given parsing computation.
+ *
+ * If a sub-parser used within the given parsing computation fails, the entire `parser` call fails.
+ * However, this failure is not atomic, in that any sub-parser that succeeded before the failing sub-parser
+ * will still have succeeded. This means that if the failure is caught further up the parsing tree, backtracking
+ *  will resume from the position just before the failing sub-parser. NOT before the entire `parser` call.
+ *
+ * For atomic parser failure, use [atomically] instead.
  */
 fun <T> parser(p: ParserState.() -> T): Parser<T> = p
-
-
-/**
- * Consumes the next character and fails if it is not in the given list of expected characters.
- */
-fun ParserState.char(vararg expected: Char): Char {
-    if (next !in expected) {
-        fail("Expected one of ${expected.joinToString()} but got '${next}'.")
-    }
-    return char()
-}
-
-/**
- * Creates a [ParserState.char] parser.
- */
-inline fun char(vararg expected: Char) = parser { char(*expected) }
-
-/**
- * Matches the given regular expression [pattern], returning the text that matched it.
- * Fails if [pattern] could not be matched at the current point in the parser input.
- */
-fun ParserState.regex(pattern: String): String =
-    regex(Regex(pattern))
-
-/**
- * Creates [ParserState.regex] parser.
- */
-inline fun regex(pattern: String): Parser<String> {
-    val re = Regex(pattern)
-    return parser { regex(re) }
-}
-
-/**
- * Creates [ParserState.regex] parser.
- */
-inline fun regex(pattern: Regex): Parser<String> = parser { regex(pattern) }
-
-/**
- * Creates a [ParserState.string] parser.
- */
-inline fun string(expected: String) = parser { string(expected) }
-
-/**
- * Creates a [ParserState.fail] parser.
- */
-inline fun fail(reason: String) = parser { fail(reason) }
 
 /**
  * Parses zero or more instances of [p].
@@ -82,10 +43,13 @@ inline fun fail(reason: String) = parser { fail(reason) }
  */
 inline fun <T> ParserState.many(crossinline p: Parser<T>): List<T> {
     val list = mutableListOf<T>()
+    var savedPos = 0
     while (true) {
         try {
+            savedPos = position
             list.add(p())
         } catch (e: FailException) {
+            position = savedPos
             return list
         }
     }
@@ -118,12 +82,14 @@ inline fun <T> many1(noinline p: Parser<T>) = parser { many1(p) }
  * Tries the given parsers in order, returning the result of the first one to succeed.
  * Fails if none of the given parsers succeed.
  */
-inline fun <T> ParserState.oneOf(vararg ps: Parser<T>): T = atomically {
+inline fun <T> ParserState.oneOf(vararg ps: Parser<T>): T {
+    val savedPos = position
     for (p in ps) {
         try {
-            return@atomically p()
+            return p()
         } catch (e: FailException) {
             /* Try the next one */
+            position = savedPos
         }
     }
     val alts = ps.joinToString { it.toString() }
@@ -183,7 +149,8 @@ inline fun <T, S> ParserState.chainl(
     combine: (T, T, S) -> T
 ): T {
     val c = chain(p, separator)
-    var result = c.terms.first()
+    var result: T = c.terms.firstOrNull()
+        ?: fail("Chain did not match any elements.")
     for (i in c.separators.indices) {
         result = combine(result, c.terms[i + 1], c.separators[i])
     }
@@ -209,7 +176,8 @@ inline fun <T, S> ParserState.chainr(
     combine: (T, T, S) -> T
 ): T {
     val c = chain(p, separator)
-    var result = c.terms.last()
+    var result: T = c.terms.lastOrNull()
+        ?: fail("Chain did not match any elements.")
     for (i in (c.separators.size - 1) downTo 0) {
         result = combine(c.terms[i], result, c.separators[i])
     }
@@ -251,14 +219,41 @@ inline fun <B, T> bracket(
 ) = parser { bracket(before, after, p) }
 
 /**
- * Execute the given parser atomically. The parser either succeeds, or the entire parser fails.
+ * Executes the given parser atomically. The parser either succeeds, or the entire parser fails.
  */
-fun <T> ParserState.atomically(p: Parser<T>): T {
+inline fun <T> ParserState.atomically(p: Parser<T>): T {
     val savedPos = position
     return try {
         p()
     } catch (e: FailException) {
         position = savedPos
+        e.position = savedPos
         throw e
     }
 }
+
+/**
+ * Creates an [atomically] parser.
+ */
+inline fun <T> atomically(crossinline p: Parser<T>): Parser<T> =
+    parser { atomically(p) }
+
+/**
+ * Executes the given parser atomically. If it succeeds, the result of [p] is returned. If it fails, `null` is returned.
+ */
+inline fun <T> ParserState.tryParse(p: Parser<T>): T? {
+    val savedPos = position
+    return try {
+        p()
+    } catch (e: FailException) {
+        position = savedPos
+        e.position = savedPos
+        return null
+    }
+}
+
+/**
+ * Creates a [tryParse] parser.
+ */
+inline fun <T> tryParse(crossinline p: Parser<T>): Parser<T?> =
+    parser { tryParse(p) }

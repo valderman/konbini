@@ -36,7 +36,7 @@ class Parse {
         assertIs<ParserResult.Error<String>>(result)
         assertEquals(11, result.position)
         assertEquals(2, result.line)
-        assertEquals(7, result.column)
+        assertEquals(6, result.column)
     }
 
     @Test

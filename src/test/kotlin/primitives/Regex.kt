@@ -3,6 +3,7 @@ package primitives
 import cc.ekblad.konbini.ParserResult
 import cc.ekblad.konbini.parse
 import cc.ekblad.konbini.parser
+import cc.ekblad.konbini.regex
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
@@ -31,11 +32,7 @@ class Regex {
 
     @Test
     fun `can not parse a non-empty regex at the end of the input`() {
-        val p = parser {
-            regex(Regex("."))
-            kotlin.test.fail("Parser didn't fail.")
-        }
-        val result = p.parse("")
+        val result = regex(Regex(".")).parse("")
         assertIs<ParserResult.Error<*>>(result)
     }
 
@@ -52,11 +49,7 @@ class Regex {
 
     @Test
     fun `can not parse regex if eof happens before a match`() {
-        val p = parser {
-            regex(Regex("hello"))
-            kotlin.test.fail("Parser didn't fail.")
-        }
-        val result = p.parse("hell")
+        val result = regex("hello").parse("hell")
         assertIs<ParserResult.Error<*>>(result)
     }
 }

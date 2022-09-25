@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package cc.ekblad.konbini
 
 private val whitespaceRegex = Regex("\\s*")
@@ -73,3 +75,54 @@ private val singleQuotedStringRegex = Regex("""'[^\\']*(\\['nrtb\\][^\\']*)*'"""
  * Supported escape codes are \\, \', \n, \r, \t, and \b.
  */
 val singleQuotedString: Parser<String> = quotedString(singleQuotedStringRegex)
+
+/**
+ * Consumes the next character and fails if it is not in the given list of expected characters.
+ * If the list of expected characters is empty, the parser will match any character.
+ */
+fun ParserState.char(vararg expected: Char): Char {
+    if (next !in expected && expected.isNotEmpty()) {
+        fail("Expected one of ${expected.joinToString()} but got '${next}'.")
+    }
+    return char()
+}
+
+/**
+ * Creates a [ParserState.char] parser.
+ */
+inline fun char(vararg expected: Char) = parser { char(*expected) }
+
+/**
+ * Creates a parser which matches exactly one character.
+ */
+var char: Parser<Char> = char()
+
+/**
+ * Matches the given regular expression [pattern], returning the text that matched it.
+ * Fails if [pattern] could not be matched at the current point in the parser input.
+ */
+fun ParserState.regex(pattern: String): String =
+    regex(Regex(pattern))
+
+/**
+ * Creates [ParserState.regex] parser.
+ */
+inline fun regex(pattern: String): Parser<String> {
+    val re = Regex(pattern)
+    return parser { regex(re) }
+}
+
+/**
+ * Creates [ParserState.regex] parser.
+ */
+inline fun regex(pattern: Regex): Parser<String> = parser { regex(pattern) }
+
+/**
+ * Creates a [ParserState.string] parser.
+ */
+inline fun string(expected: String) = parser { string(expected) }
+
+/**
+ * Creates a [ParserState.fail] parser.
+ */
+inline fun fail(reason: String) = parser { fail(reason) }
