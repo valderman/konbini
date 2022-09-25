@@ -1,3 +1,4 @@
+@file:Suppress("NOTHING_TO_INLINE")
 package cc.ekblad.konbini
 
 /**
@@ -68,10 +69,10 @@ inline fun <T> many(crossinline p: Parser<T>) = parser { many(p) }
 /**
  * Atomically parses one or more instances of [p].
  */
-inline fun <T> ParserState.many1(noinline p: Parser<T>): List<T> = atomically {
+inline fun <T> ParserState.many1(crossinline p: Parser<T>): List<T> = atomically {
     val elems = many(p)
     if (elems.isEmpty()) {
-        fail("Expected at least one $p, but got none.")
+        fail("Expected at least one element, but got none.")
     }
     elems
 }
