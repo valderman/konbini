@@ -94,9 +94,8 @@ internal class StringParserState(private val input: String) : ParserState {
             fail("Expected '$expected', but got EOF.")
         }
 
-        val actual = input.substring(position, position + expected.length)
-        if (actual != expected) {
-            fail("Expected '$expected', but got '$actual'.")
+        if (!input.regionMatches(position, expected, 0, expected.length)) {
+            fail("Expected '$expected', but got '${input.substring(position, position + expected.length)}'.")
         }
         position += expected.length
         return expected

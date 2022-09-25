@@ -1,5 +1,3 @@
-@file:Suppress("NOTHING_TO_INLINE")
-
 package cc.ekblad.konbini
 
 /**
@@ -144,7 +142,7 @@ inline fun <T, S> chain(crossinline p: Parser<T>, crossinline separator: Parser<
 inline fun <T, S> ParserState.chainl(
     crossinline p: Parser<T>,
     crossinline separator: Parser<S>,
-    combine: (T, T, S) -> T
+    crossinline combine: (T, T, S) -> T
 ): T {
     val c = chain(p, separator)
     var result: T = c.terms.firstOrNull()
@@ -171,7 +169,7 @@ inline fun <T, S> chainl(
 inline fun <T, S> ParserState.chainr(
     crossinline p: Parser<T>,
     crossinline separator: Parser<S>,
-    combine: (T, T, S) -> T
+    crossinline combine: (T, T, S) -> T
 ): T {
     val c = chain(p, separator)
     var result: T = c.terms.lastOrNull()

@@ -1,5 +1,3 @@
-@file:Suppress("NOTHING_TO_INLINE")
-
 package cc.ekblad.konbini
 
 private val whitespaceRegex = Regex("\\s*")
@@ -48,9 +46,8 @@ val boolean: Parser<Boolean> = parser {
     regex(booleanRegex).toBooleanStrict()
 }
 
-private fun quotedString(regex: Regex): Parser<String> = parser {
-    val result = regex(regex)
-    result.substring(1, result.length - 1)
+private inline fun quotedString(regex: Regex): Parser<String> = regex(regex).map {
+    it.substring(1, it.lastIndex)
         .replace("\\'", "'")
         .replace("\\\"", "\"")
         .replace("\\\\", "\\")
@@ -80,7 +77,7 @@ val singleQuotedString: Parser<String> = quotedString(singleQuotedStringRegex)
  * Consumes the next character and fails if it is not in the given list of expected characters.
  * If the list of expected characters is empty, the parser will match any character.
  */
-fun ParserState.char(vararg expected: Char): Char {
+inline fun ParserState.char(vararg expected: Char): Char {
     if (next !in expected && expected.isNotEmpty()) {
         fail("Expected one of ${expected.joinToString()} but got '$next'.")
     }
@@ -101,7 +98,7 @@ var char: Parser<Char> = char()
  * Matches the given regular expression [pattern], returning the text that matched it.
  * Fails if [pattern] could not be matched at the current point in the parser input.
  */
-fun ParserState.regex(pattern: String): String =
+inline fun ParserState.regex(pattern: String): String =
     regex(Regex(pattern))
 
 /**
@@ -109,7 +106,7 @@ fun ParserState.regex(pattern: String): String =
  */
 inline fun regex(pattern: String): Parser<String> {
     val re = Regex(pattern)
-    return parser { regex(re) }
+    return regex(re)
 }
 
 /**
