@@ -1,3 +1,3 @@
 
-rootProject.name = "kombine"
+rootProject.name = "konbini"
 
