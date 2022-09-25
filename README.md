@@ -1,4 +1,9 @@
 # Konbini
+[![Docs](https://img.shields.io/badge/docs-latest-informational)](http://valderman.github.io/konbini/konbini/cc.ekblad.konbini/)
+[![Release](https://jitpack.io/v/cc.ekblad/konbini.svg)](https://jitpack.io/#cc.ekblad/konbini)
+![Build Status](https://github.com/valderman/konbini/workflows/CI/badge.svg)
+[![License](https://img.shields.io/github/license/valderman/konbini)](https://github.com/valderman/konbini/blob/main/LICENSE)
+
 A Kotlin multiplatform parser combinator library.
 
 ## Getting started
