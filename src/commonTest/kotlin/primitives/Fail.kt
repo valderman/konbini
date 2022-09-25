@@ -13,7 +13,7 @@ class Fail {
     fun fail_causes_parser_to_fail() {
         val message = "I just don't feel like parsing today."
         val result = fail(message).parse("hello")
-        assertIs<ParserResult.Error<Unit>>(result)
+        assertIs<ParserResult.Error>(result)
         assertEquals(message, result.reason)
         assertEquals(0, result.position)
     }
@@ -26,7 +26,7 @@ class Fail {
             fail(message)
         }
         val result = p.parse("hello")
-        assertIs<ParserResult.Error<Unit>>(result)
+        assertIs<ParserResult.Error>(result)
         assertEquals(message, result.reason)
         assertEquals(3, result.position)
     }

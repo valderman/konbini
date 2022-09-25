@@ -11,7 +11,7 @@ class ParseToEnd {
     @Test
     fun parseToEnd_fails_if_there_is_leftover_input() {
         val result = string("hello\nhel").parseToEnd("hello\nhello")
-        assertIs<ParserResult.Error<String>>(result)
+        assertIs<ParserResult.Error>(result)
         assertEquals(9, result.position)
         assertEquals(2, result.line)
         assertEquals(4, result.column)
@@ -20,7 +20,7 @@ class ParseToEnd {
     @Test
     fun parseToEnd_fails_if_there_is_leftover_whitespace() {
         val result = string("hello").parseToEnd("hello\n")
-        assertIs<ParserResult.Error<String>>(result)
+        assertIs<ParserResult.Error>(result)
         assertEquals(5, result.position)
         assertEquals(1, result.line)
         assertEquals(6, result.column)
@@ -29,7 +29,7 @@ class ParseToEnd {
     @Test
     fun parseToEnd_fails_if_there_is_leading_whitespace() {
         val result = string("hello").parseToEnd(" hello")
-        assertIs<ParserResult.Error<String>>(result)
+        assertIs<ParserResult.Error>(result)
         assertEquals(0, result.position)
         assertEquals(1, result.line)
         assertEquals(1, result.column)

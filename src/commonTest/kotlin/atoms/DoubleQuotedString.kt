@@ -42,7 +42,7 @@ class DoubleQuotedString {
     @Test
     fun can_not_parse_garbage_as_quoted_string() {
         listOf("'''", "''", "$123", "", "xyz", "x10", "ff", "e3").forEach { str ->
-            assertIs<ParserResult.Error<String>>(doubleQuotedString.parse(str))
+            assertIs<ParserResult.Error>(doubleQuotedString.parse(str))
         }
     }
 }

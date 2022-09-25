@@ -49,8 +49,8 @@ class Many {
 
     @Test
     fun many1_fails_if_it_cant_parse_at_least_one_element() {
-        assertIs<ParserResult.Error<List<Char>>>(many1(char('x')).parse("y"))
-        assertIs<ParserResult.Error<List<Char>>>(parser { many1(parser { char('x') }) }.parse("y"))
+        assertIs<ParserResult.Error>(many1(char('x')).parse("y"))
+        assertIs<ParserResult.Error>(parser { many1(parser { char('x') }) }.parse("y"))
     }
 
     @Test

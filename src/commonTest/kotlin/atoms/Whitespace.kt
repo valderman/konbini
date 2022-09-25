@@ -38,7 +38,7 @@ class Whitespace {
     @Test
     fun mandatory_whitespace_parser_fails_on_non_whitespace() {
         whitespace1.parse("hello").let {
-            assertIs<ParserResult.Error<String>>(it)
+            assertIs<ParserResult.Error>(it)
         }
     }
 }

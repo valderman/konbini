@@ -39,7 +39,7 @@ class Boolean {
     @Test
     fun can_not_parse_garbage_as_boolean() {
         listOf("tru", "f", "hello", "truefgs", "asdfalse", "  ", "$123", "", "0", "x10", "ff", "e3").forEach { number ->
-            assertIs<ParserResult.Error<Boolean>>(boolean.parse(number))
+            assertIs<ParserResult.Error>(boolean.parse(number))
         }
     }
 }

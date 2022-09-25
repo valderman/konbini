@@ -16,7 +16,7 @@ class Parser {
             char('y')
         }
         val result = p.parse("xz")
-        assertIs<ParserResult.Error<Char>>(result)
+        assertIs<ParserResult.Error>(result)
         assertEquals(1, result.position)
     }
 

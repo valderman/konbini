@@ -26,7 +26,7 @@ class String {
             kotlin.test.fail("Parser didn't fail.")
         }
         val result = p.parse("bar")
-        assertIs<ParserResult.Error<*>>(result)
+        assertIs<ParserResult.Error>(result)
     }
 
     @Test
@@ -36,7 +36,7 @@ class String {
             kotlin.test.fail("Parser didn't fail.")
         }
         val result = p.parse("")
-        assertIs<ParserResult.Error<*>>(result)
+        assertIs<ParserResult.Error>(result)
     }
 
     @Test
@@ -46,6 +46,6 @@ class String {
             kotlin.test.fail("Parser didn't fail.")
         }
         val result = p.parse("hell")
-        assertIs<ParserResult.Error<*>>(result)
+        assertIs<ParserResult.Error>(result)
     }
 }

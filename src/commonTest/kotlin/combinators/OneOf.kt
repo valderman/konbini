@@ -15,10 +15,10 @@ class OneOf {
     @Test
     fun oneOf_fails_if_all_alternatives_fail() {
         oneOf(string("foo"), string("bar"), string("baz")).parse("hello").let {
-            assertIs<ParserResult.Error<String>>(it)
+            assertIs<ParserResult.Error>(it)
         }
         parser { oneOf(parser { string("nope") }) }.parse("foot").let {
-            assertIs<ParserResult.Error<String>>(it)
+            assertIs<ParserResult.Error>(it)
         }
     }
 

@@ -47,7 +47,7 @@ class Decimal {
     @Test
     fun can_not_parse_garbage_as_decimal() {
         listOf("  ", "$123", "", "xyz", "x10", "ff", "e3").forEach { number ->
-            assertIs<ParserResult.Error<Double>>(decimal.parse(number))
+            assertIs<ParserResult.Error>(decimal.parse(number))
         }
     }
 }

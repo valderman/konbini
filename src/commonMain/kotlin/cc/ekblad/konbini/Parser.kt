@@ -5,7 +5,7 @@ typealias Parser<T> = ParserState.() -> T
 /**
  * The result of parsing a string.
  */
-sealed class ParserResult<T> {
+sealed class ParserResult<in T> {
     /**
      * Parsing succeeded, with the result stored in [result] and any remaining input stored in [remainingInput].
      */
@@ -14,12 +14,12 @@ sealed class ParserResult<T> {
     /**
      * Parsing failed with the given [reason], at index [position] in the input string.
      */
-    data class Error<T>(
+    data class Error(
         val reason: String,
         val position: Int,
         val line: Int,
         val column: Int
-    ) : ParserResult<T>()
+    ) : ParserResult<Any?>()
 }
 
 /**

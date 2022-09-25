@@ -36,13 +36,13 @@ class Char {
     @Test
     fun can_not_parse_the_next_char_if_it_is_the_wrong_one() {
         val result = char('a', 'b', 'c').parse("xyz")
-        assertIs<ParserResult.Error<*>>(result)
+        assertIs<ParserResult.Error>(result)
     }
 
     @Test
     fun can_not_parse_the_next_char_if_there_isnt_one() {
-        assertIs<ParserResult.Error<*>>(char.parse(""))
-        assertIs<ParserResult.Error<*>>(parser { char() }.parse(""))
+        assertIs<ParserResult.Error>(char.parse(""))
+        assertIs<ParserResult.Error>(parser { char() }.parse(""))
     }
 
     @Test

@@ -33,7 +33,7 @@ class Chain {
     @Test
     fun chain1_fails_on_empty_chain() {
         val result = chain1(char('c'), char(',')).parse("hello")
-        assertIs<ParserResult.Error<Chain<Char, Char>>>(result)
+        assertIs<ParserResult.Error>(result)
         assertEquals(0, result.position)
     }
 
@@ -70,13 +70,13 @@ class Chain {
     @Test
     fun chainl_fails_on_empty_chain() {
         val result = chainl(string("x"), char(',')) { x, _, _ -> x }.parse("abc")
-        assertIs<ParserResult.Error<Chain<Char, Char>>>(result)
+        assertIs<ParserResult.Error>(result)
     }
 
     @Test
     fun chainr_fails_on_empty_chain() {
         val result = chainr(string("x"), char(',')) { x, _, _ -> x }.parse("abc")
-        assertIs<ParserResult.Error<Chain<Char, Char>>>(result)
+        assertIs<ParserResult.Error>(result)
     }
 
     @Test

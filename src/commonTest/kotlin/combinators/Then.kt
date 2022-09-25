@@ -3,7 +3,6 @@ package combinators
 import cc.ekblad.konbini.ParserResult
 import cc.ekblad.konbini.char
 import cc.ekblad.konbini.parse
-import cc.ekblad.konbini.parser
 import cc.ekblad.konbini.then
 import kotlin.test.Test
 import kotlin.test.assertEquals

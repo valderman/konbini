@@ -16,7 +16,7 @@ class Bracket {
     fun bracket_fails_atomically_when_p_fails() {
         val p = bracket(char('('), char(')'), string("hello"))
         val result = p.parse("(hullo)")
-        assertIs<ParserResult.Error<String>>(result)
+        assertIs<ParserResult.Error>(result)
         assertEquals(0, result.position)
     }
 
@@ -24,7 +24,7 @@ class Bracket {
     fun bracket_fails_atomically_when_closing_bracket_fails() {
         val p = bracket(char('('), char(')'), string("hello"))
         val result = p.parse("(hello]")
-        assertIs<ParserResult.Error<String>>(result)
+        assertIs<ParserResult.Error>(result)
         assertEquals(0, result.position)
     }
 

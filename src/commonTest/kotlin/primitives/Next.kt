@@ -29,7 +29,7 @@ class Next {
             next
         }
         val result = p.parse("hello")
-        assertIs<ParserResult.Error<Char>>(result)
+        assertIs<ParserResult.Error>(result)
         assertEquals(5, result.position)
     }
 }

@@ -27,13 +27,13 @@ class Regex {
             kotlin.test.fail("Parser didn't fail.")
         }
         val result = p.parse("bar")
-        assertIs<ParserResult.Error<*>>(result)
+        assertIs<ParserResult.Error>(result)
     }
 
     @Test
     fun can_not_parse_a_nonempty_regex_at_the_end_of_the_input() {
         val result = regex(Regex(".")).parse("")
-        assertIs<ParserResult.Error<*>>(result)
+        assertIs<ParserResult.Error>(result)
     }
 
     @Test
@@ -50,6 +50,6 @@ class Regex {
     @Test
     fun can_not_parse_regex_if_eof_happens_before_a_match() {
         val result = regex("hello").parse("hell")
-        assertIs<ParserResult.Error<*>>(result)
+        assertIs<ParserResult.Error>(result)
     }
 }

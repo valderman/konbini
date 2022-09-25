@@ -37,6 +37,6 @@ class EOF {
             kotlin.test.fail("Parser did not fail.")
         }
         val result = p.parse("hej")
-        assertIs<ParserResult.Error<*>>(result)
+        assertIs<ParserResult.Error>(result)
     }
 }

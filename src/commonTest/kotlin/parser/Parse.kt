@@ -21,7 +21,7 @@ class Parse {
     @Test
     fun parse_does_not_ignore_whitespace_by_default() {
         val result = string("hel").parse(" hello")
-        assertIs<ParserResult.Error<String>>(result)
+        assertIs<ParserResult.Error>(result)
         assertEquals(0, result.position)
     }
 
@@ -37,7 +37,7 @@ class Parse {
             string("from konbini")
         }
         val result = p.parse("hello\ntiny world\nfrom konbini")
-        assertIs<ParserResult.Error<String>>(result)
+        assertIs<ParserResult.Error>(result)
         assertEquals(11, result.position)
         assertEquals(2, result.line)
         assertEquals(6, result.column)
@@ -50,7 +50,7 @@ class Parse {
             string("la")
         }
         val result = p.parse("hello\ntiny world\nfrom konbini")
-        assertIs<ParserResult.Error<String>>(result)
+        assertIs<ParserResult.Error>(result)
         assertEquals(3, result.position)
         assertEquals(1, result.line)
         assertEquals(4, result.column)

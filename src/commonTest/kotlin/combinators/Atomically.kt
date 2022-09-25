@@ -16,7 +16,7 @@ class Atomically {
             char('y')
         }
         val result = p.parse("xz")
-        assertIs<ParserResult.Error<Char>>(result)
+        assertIs<ParserResult.Error>(result)
         assertEquals(0, result.position)
     }
 
