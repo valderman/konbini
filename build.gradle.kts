@@ -1,9 +1,10 @@
 plugins {
     kotlin("multiplatform") version "1.7.10"
+    `maven-publish`
 }
 
 group = "cc.ekblad"
-version = "1.0-SNAPSHOT"
+version = "0.1"
 
 repositories {
     mavenCentral()
@@ -49,5 +50,34 @@ kotlin {
         val jsTest by getting
         val nativeMain by getting
         val nativeTest by getting
+    }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("konbini") {
+            groupId = "cc.ekblad"
+            artifactId = "konbini"
+            version = project.version.toString()
+            from(components["kotlin"])
+            pom {
+                name.set("konbini")
+                description.set("Lightweight parser combinator library")
+                url.set("https://github.com/valderman/konbini")
+                licenses {
+                    license {
+                        name.set("MIT")
+                        url.set("https://github.com/valderman/konbini/blob/main/LICENSE")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("valderman")
+                        name.set("Anton Ekblad")
+                        email.set("anton@ekblad.cc")
+                    }
+                }
+            }
+        }
     }
 }
