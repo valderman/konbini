@@ -24,6 +24,13 @@ inline fun <T, U> Parser<T>.map(crossinline f: (T) -> U): Parser<U> =
     parser { f(this.this@map()) }
 
 /**
+ * Applies the receiver parser, then applies [p].
+ * This parser is not atomic.
+ */
+inline fun <T, U> Parser<T>.then(crossinline p: Parser<U>): Parser<Pair<T, U>> =
+    parser { this@then() to p() }
+
+/**
  * Create a parser that performs the given parsing computation.
  *
  * If a sub-parser used within the given parsing computation fails, the entire `parser` call fails.
