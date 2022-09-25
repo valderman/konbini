@@ -3,12 +3,14 @@ package combinators
 import cc.ekblad.konbini.Chain
 import cc.ekblad.konbini.ParserResult
 import cc.ekblad.konbini.chain
+import cc.ekblad.konbini.chain1
 import cc.ekblad.konbini.chainl
 import cc.ekblad.konbini.chainr
 import cc.ekblad.konbini.char
 import cc.ekblad.konbini.integer
 import cc.ekblad.konbini.map
 import cc.ekblad.konbini.parse
+import cc.ekblad.konbini.parser
 import cc.ekblad.konbini.string
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -29,11 +31,32 @@ class Chain {
     }
 
     @Test
+    fun chain1_fails_on_empty_chain() {
+        val result = chain1(char('c'), char(',')).parse("hello")
+        assertIs<ParserResult.Error<Chain<Char, Char>>>(result)
+        assertEquals(0, result.position)
+    }
+
+    @Test
+    fun chain1_parses_one_or_more_elements() {
+        val result = parser {
+            chain1(
+                parser { char('c') },
+                parser { char(',') }
+            )
+        }.parse("c,c,d")
+        assertIs<ParserResult.Ok<Chain<Char, Char>>>(result)
+        assertEquals(listOf('c', 'c'), result.result.terms)
+        assertEquals(listOf(','), result.result.separators)
+        assertEquals(",d", result.remainingInput)
+    }
+
+    @Test
     fun chain_parses_comma_separated_lists_properly() {
         val result = chain(char, char(',')).parse("a,b,c,d,e")
         assertIs<ParserResult.Ok<Chain<Char, Char>>>(result)
-        assertEquals(listOf('a','b','c','d','e'), result.result.terms)
-        assertEquals(listOf(',',',',',',','), result.result.separators)
+        assertEquals(listOf('a', 'b', 'c', 'd', 'e'), result.result.terms)
+        assertEquals(listOf(',', ',', ',', ','), result.result.separators)
     }
 
     @Test

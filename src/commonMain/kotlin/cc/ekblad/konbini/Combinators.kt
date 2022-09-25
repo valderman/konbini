@@ -60,7 +60,6 @@ inline fun <T> ParserState.many(crossinline p: Parser<T>): List<T> {
  */
 inline fun <T> many(crossinline p: Parser<T>) = parser { many(p) }
 
-
 /**
  * Atomically parses one or more instances of [p].
  */
@@ -77,7 +76,6 @@ inline fun <T> ParserState.many1(noinline p: Parser<T>): List<T> = atomically {
  */
 inline fun <T> many1(noinline p: Parser<T>) = parser { many1(p) }
 
-
 /**
  * Tries the given parsers in order, returning the result of the first one to succeed.
  * Fails if none of the given parsers succeed.
@@ -93,7 +91,7 @@ inline fun <T> ParserState.oneOf(vararg ps: Parser<T>): T {
         }
     }
     val alts = ps.joinToString { it.toString() }
-    fail("Expected one of ${alts}, but none of them matched.")
+    fail("Expected one of $alts, but none of them matched.")
 }
 
 /**

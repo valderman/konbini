@@ -1,6 +1,9 @@
 package atoms
 
-import cc.ekblad.konbini.*
+import cc.ekblad.konbini.ParserResult
+import cc.ekblad.konbini.doubleQuotedString
+import cc.ekblad.konbini.parse
+import cc.ekblad.konbini.parseToEnd
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs

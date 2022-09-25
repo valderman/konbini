@@ -4,6 +4,7 @@ import cc.ekblad.konbini.ParserResult
 import cc.ekblad.konbini.bracket
 import cc.ekblad.konbini.char
 import cc.ekblad.konbini.parse
+import cc.ekblad.konbini.parser
 import cc.ekblad.konbini.regex
 import cc.ekblad.konbini.string
 import kotlin.test.Test
@@ -30,6 +31,21 @@ class Bracket {
     @Test
     fun can_parse_bracketed_expression() {
         val p = bracket(char('('), char(')'), regex("\\w+"))
+        val result = p.parse("(hello)(world)")
+        assertIs<ParserResult.Ok<String>>(result)
+        assertEquals("hello", result.result)
+        assertEquals("(world)", result.remainingInput)
+    }
+
+    @Test
+    fun non_inlined_bracket_can_parse_bracketed_expression() {
+        val p = parser {
+            bracket(
+                parser { char('(') },
+                parser { char(')') },
+                parser { regex("\\w+") }
+            )
+        }
         val result = p.parse("(hello)(world)")
         assertIs<ParserResult.Ok<String>>(result)
         assertEquals("hello", result.result)

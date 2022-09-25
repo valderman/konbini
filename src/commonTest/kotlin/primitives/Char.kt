@@ -41,8 +41,8 @@ class Char {
 
     @Test
     fun can_not_parse_the_next_char_if_there_isnt_one() {
-        val result = char.parse("")
-        assertIs<ParserResult.Error<*>>(result)
+        assertIs<ParserResult.Error<*>>(char.parse(""))
+        assertIs<ParserResult.Error<*>>(parser { char() }.parse(""))
     }
 
     @Test

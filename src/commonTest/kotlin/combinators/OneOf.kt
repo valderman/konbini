@@ -14,8 +14,12 @@ import kotlin.test.assertIs
 class OneOf {
     @Test
     fun oneOf_fails_if_all_alternatives_fail() {
-        val result = oneOf(string("foo"), string("bar"), string("baz")).parse("hello")
-        assertIs<ParserResult.Error<String>>(result)
+        oneOf(string("foo"), string("bar"), string("baz")).parse("hello").let {
+            assertIs<ParserResult.Error<String>>(it)
+        }
+        parser { oneOf(parser { string("nope") }) }.parse("foot").let {
+            assertIs<ParserResult.Error<String>>(it)
+        }
     }
 
     @Test

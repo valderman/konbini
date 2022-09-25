@@ -84,7 +84,7 @@ internal class StringParserState(private val input: String) : ParserState {
 
     override fun regex(pattern: Regex): String {
         val result = pattern.matchAt(input, position)?.value
-            ?: fail("Expected pattern '${pattern}', but there was no match.")
+            ?: fail("Expected pattern '$pattern', but there was no match.")
         position += result.length
         return result
     }

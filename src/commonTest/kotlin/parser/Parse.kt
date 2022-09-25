@@ -1,6 +1,10 @@
 package parser
 
-import cc.ekblad.konbini.*
+import cc.ekblad.konbini.ParserResult
+import cc.ekblad.konbini.parse
+import cc.ekblad.konbini.parser
+import cc.ekblad.konbini.string
+import cc.ekblad.konbini.whitespace1
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs

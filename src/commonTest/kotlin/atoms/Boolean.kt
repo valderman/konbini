@@ -1,6 +1,9 @@
 package atoms
 
-import cc.ekblad.konbini.*
+import cc.ekblad.konbini.ParserResult
+import cc.ekblad.konbini.boolean
+import cc.ekblad.konbini.parse
+import cc.ekblad.konbini.parseToEnd
 import kotlin.Boolean
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -25,7 +28,7 @@ class Boolean {
     @Test
     fun can_parse_boolean_when_followed_by_non_word_character() {
         examples.forEach { (input, expected) ->
-            boolean.parse("${input}!").let { result ->
+            boolean.parse("$input!").let { result ->
                 assertIs<ParserResult.Ok<Boolean>>(result)
                 assertEquals(expected, result.result)
                 assertEquals("!", result.remainingInput)

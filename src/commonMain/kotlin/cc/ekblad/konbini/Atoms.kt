@@ -82,7 +82,7 @@ val singleQuotedString: Parser<String> = quotedString(singleQuotedStringRegex)
  */
 fun ParserState.char(vararg expected: Char): Char {
     if (next !in expected && expected.isNotEmpty()) {
-        fail("Expected one of ${expected.joinToString()} but got '${next}'.")
+        fail("Expected one of ${expected.joinToString()} but got '$next'.")
     }
     return char()
 }

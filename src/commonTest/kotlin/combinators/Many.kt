@@ -38,17 +38,19 @@ class Many {
     @Test
     fun many1_can_parse_one_or_more_instances_of_its_given_parser() {
         examples.filter { it.third.isNotEmpty() }.forEach { (input, parser, expected) ->
-            val result = many1(parser).parse(input)
-            assertIs<ParserResult.Ok<List<Char>>>(result, "Couldn't parse '$input'.")
-            assertEquals(expected, result.result.joinToString(""))
-            assertEquals(input.removePrefix(expected), result.remainingInput)
+            listOf(many1(parser), parser { many1(parser) }).forEach { p ->
+                val result = p.parse(input)
+                assertIs<ParserResult.Ok<List<Char>>>(result, "Couldn't parse '$input'.")
+                assertEquals(expected, result.result.joinToString(""))
+                assertEquals(input.removePrefix(expected), result.remainingInput)
+            }
         }
     }
 
     @Test
     fun many1_fails_if_it_cant_parse_at_least_one_element() {
-        val result = many1(char('x')).parse("y")
-        assertIs<ParserResult.Error<List<Char>>>(result)
+        assertIs<ParserResult.Error<List<Char>>>(many1(char('x')).parse("y"))
+        assertIs<ParserResult.Error<List<Char>>>(parser { many1(parser { char('x') }) }.parse("y"))
     }
 
     @Test
