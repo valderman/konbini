@@ -73,6 +73,6 @@ class OneOf {
         assertEquals("THIS error!", result.reason)
         assertEquals(3, result.column)
         assertEquals(1, result.line)
-        assertEquals(0, result.position)
+        assertEquals(2, result.position)
     }
 }
