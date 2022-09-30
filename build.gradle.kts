@@ -3,7 +3,7 @@ import java.nio.file.Paths
 import kotlin.io.path.inputStream
 
 plugins {
-    kotlin("multiplatform") version "1.7.10"
+    kotlin("multiplatform") version "1.7.20"
     id("org.jetbrains.dokka") version "1.7.10"
     id("org.jlleitschuh.gradle.ktlint") version "11.0.0"
     id("com.github.ben-manes.versions") version "0.42.0"
@@ -134,13 +134,13 @@ tasks {
             onCheck.set(true)
             rule {
                 bound {
-                    minValue = 90
+                    minValue = 80
                     counter = kotlinx.kover.api.CounterType.BRANCH
                     valueType = kotlinx.kover.api.VerificationValueType.COVERED_PERCENTAGE
                 }
 
                 bound {
-                    minValue = 90
+                    minValue = 80
                     counter = kotlinx.kover.api.CounterType.LINE
                     valueType = kotlinx.kover.api.VerificationValueType.COVERED_PERCENTAGE
                 }
