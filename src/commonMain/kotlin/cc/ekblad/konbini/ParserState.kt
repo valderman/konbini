@@ -2,62 +2,21 @@ package cc.ekblad.konbini
 
 /**
  * Represents an ongoing parsing computation.
+ *
+ * Inherit this class if you need to keep your own parsing state as well.
  */
-sealed interface ParserState {
+open class ParserState {
+    /**
+     * The entire input string the parser is working with.
+     */
+    lateinit var input: String
+        internal set
+
     /**
      * Inspect the next character in the input string, without advancing the parser position.
      * Fails if the parser is already at the end of the input.
      */
     val next: Char
-
-    /**
-     * Returns the rest of the string being parsed, without advancing the parser position.
-     */
-    val rest: String
-
-    /**
-     * Current position of the parser.
-     */
-    var position: Int
-
-    /**
-     * Matches the end of the input string.
-     */
-    fun eof(): Unit
-
-    /**
-     * Reads the next character in the input. If the parser is already at the end of the input, parsing fails.
-     */
-    fun char(): Char
-
-    /**
-     * Reads the next `expected.length` characters from the input. Fails if they are not exactly [expected].
-     */
-    fun string(expected: String): String
-
-    /**
-     * Attempts to match [pattern] at the current position in the input, and returns the character sequence that
-     * matches, if any. Fails if the pattern could not be matched at this position in the inut.
-     */
-    fun regex(pattern: Regex): String
-
-    /**
-     * Unconditionally fail parsing with the given message.
-     */
-    fun fail(msg: String): Nothing
-}
-
-/**
- * Used internally to signal parser failure, initiating backtracking.
- */
-@PublishedApi
-internal class FailException(var reason: String, var position: Int) : RuntimeException()
-
-internal class StringParserState(private val input: String) : ParserState {
-    private val failException: FailException = FailException("", 0)
-    override var position: Int = 0
-
-    override val next: Char
         get() {
             if (position >= input.length) {
                 fail("Expected character, but got EOF.")
@@ -65,7 +24,10 @@ internal class StringParserState(private val input: String) : ParserState {
             return input[position]
         }
 
-    override val rest: String
+    /**
+     * Returns the rest of the string being parsed, without advancing the parser position.
+     */
+    val rest: String
         get() {
             if (position >= input.length) {
                 return ""
@@ -73,7 +35,24 @@ internal class StringParserState(private val input: String) : ParserState {
             return input.substring(position)
         }
 
-    override fun char(): Char {
+    /**
+     * Current position of the parser.
+     */
+    var position: Int = 0
+
+    /**
+     * Matches the end of the input string.
+     */
+    fun eof() {
+        if (position < input.length) {
+            fail("Expected EOF, but got '$next'.")
+        }
+    }
+
+    /**
+     * Reads the next character in the input. If the parser is already at the end of the input, parsing fails.
+     */
+    fun char(): Char {
         if (position >= input.length) {
             fail("Expected character, but got EOF.")
         }
@@ -82,14 +61,10 @@ internal class StringParserState(private val input: String) : ParserState {
         return c
     }
 
-    override fun regex(pattern: Regex): String {
-        val result = pattern.matchAt(input, position)?.value
-            ?: fail("Expected pattern '$pattern', but there was no match.")
-        position += result.length
-        return result
-    }
-
-    override fun string(expected: String): String {
+    /**
+     * Reads the next `expected.length` characters from the input. Fails if they are not exactly [expected].
+     */
+    fun string(expected: String): String {
         if (position + expected.length > input.length) {
             fail("Expected '$expected', but got EOF.")
         }
@@ -101,15 +76,35 @@ internal class StringParserState(private val input: String) : ParserState {
         return expected
     }
 
-    override fun fail(msg: String): Nothing {
+    /**
+     * Attempts to match [pattern] at the current position in the input, and returns the character sequence that
+     * matches, if any. Fails if the pattern could not be matched at this position in the inut.
+     */
+    fun regex(pattern: Regex): String {
+        val result = pattern.matchAt(input, position)?.value
+            ?: fail("Expected pattern '$pattern', but there was no match.")
+        position += result.length
+        return result
+    }
+
+    /**
+     * Unconditionally fail parsing with the given message.
+     */
+    fun fail(msg: String): Nothing {
         failException.reason = msg
         failException.position = position
         throw failException
     }
 
-    override fun eof() {
-        if (position < input.length) {
-            fail("Expected EOF, but got '$next'.")
-        }
-    }
+    /**
+     * Reusable exception for backtracking. Speeds up backtracking by at least 10x compared to allocating a new one
+     * every time.
+     */
+    private val failException: FailException = FailException("", 0)
 }
+
+/**
+ * Used internally to signal parser failure, initiating backtracking.
+ */
+@PublishedApi
+internal class FailException(var reason: String, var position: Int) : RuntimeException()

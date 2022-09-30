@@ -27,7 +27,7 @@ sealed class ParserResult<in T> {
  * If [skipWhitespace] is true, any whitespace at the beginning of the input is skipped.
  */
 fun <T> Parser<T>.parse(input: String, skipWhitespace: Boolean = false): ParserResult<T> {
-    val state = StringParserState(input)
+    val state = ParserState().also { it.input = input }
     return try {
         val p = if (skipWhitespace) {
             parser { whitespace() ; this@parse() }
