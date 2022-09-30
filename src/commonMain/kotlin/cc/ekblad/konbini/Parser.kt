@@ -32,11 +32,11 @@ fun <T> Parser<T>.parse(input: String, skipWhitespace: Boolean = false): ParserR
 /**
  * Like [parse], but with a custom parser state.
  */
-fun <S : ParserState, T> Parser<T>.parse(input: String, skipWhitespace: Boolean = false, state: S): ParserResult<T> {
+fun <S : ParserState, T> (S.() -> T).parse(input: String, skipWhitespace: Boolean = false, state: S): ParserResult<T> {
     state.input = input
     return try {
         val p = if (skipWhitespace) {
-            parser { whitespace() ; this@parse() }
+            { whitespace() ; this@parse() }
         } else {
             this@parse
         }
@@ -59,12 +59,12 @@ fun <T> Parser<T>.parseToEnd(input: String, ignoreWhitespace: Boolean = false): 
 /**
  * Like [parseToEnd], but with a custom parser state.
  */
-fun <S : ParserState, T> Parser<T>.parseToEnd(
+fun <S : ParserState, T> (S.() -> T).parseToEnd(
     input: String,
     ignoreWhitespace: Boolean = false,
     state: S
 ): ParserResult<T> {
-    val p = parser {
+    val p: S.() -> T = {
         val result = this@parseToEnd()
         if (ignoreWhitespace) {
             whitespace()
