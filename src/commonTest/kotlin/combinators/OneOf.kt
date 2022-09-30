@@ -8,6 +8,7 @@ import cc.ekblad.konbini.parse
 import cc.ekblad.konbini.parser
 import cc.ekblad.konbini.string
 import kotlin.test.Test
+import kotlin.test.assertContains
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 
@@ -44,5 +45,34 @@ class OneOf {
         ).parse("foot")
         assertIs<ParserResult.Ok<String>>(result)
         assertEquals("foot", result.result)
+    }
+
+    @Test
+    fun oneOf_error_message_includes_labels() {
+        val result = oneOf(
+            "fx" to parser { char('f') ; char('x') },
+            "foot" to { string("fo") ; string("ot") }
+        ).parse("foo")
+        assertIs<ParserResult.Error>(result)
+        assertContains(result.reason, "fx")
+        assertContains(result.reason, "foot")
+
+        // Line info indicates entire parser
+        assertEquals(1, result.column)
+        assertEquals(1, result.line)
+        assertEquals(0, result.position)
+    }
+
+    @Test
+    fun oneOf_error_message_includes_last_subparser_error_if_no_labels_are_given() {
+        val result = oneOf(
+            fail("not this error"),
+            { string("fo") ; fail("THIS error!") }
+        ).parse("foo")
+        assertIs<ParserResult.Error>(result)
+        assertEquals("THIS error!", result.reason)
+        assertEquals(3, result.column)
+        assertEquals(1, result.line)
+        assertEquals(0, result.position)
     }
 }

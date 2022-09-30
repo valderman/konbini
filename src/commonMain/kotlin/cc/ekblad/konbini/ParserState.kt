@@ -97,6 +97,17 @@ open class ParserState {
     }
 
     /**
+     * Propagate the last thrown parser failure.
+     * If [newMsg] is not `null`, the failure's `reason` message is replaced by the given one.
+     */
+    fun propagateLastFailure(newMsg: String? = null): Nothing {
+        if (newMsg != null) {
+            failException.reason = newMsg
+        }
+        throw failException
+    }
+
+    /**
      * Reusable exception for backtracking. Speeds up backtracking by at least 10x compared to allocating a new one
      * every time.
      */

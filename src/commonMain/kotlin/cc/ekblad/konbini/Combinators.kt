@@ -84,7 +84,7 @@ inline fun <T> many1(noinline p: Parser<T>) = parser { many1(p) }
 
 /**
  * Tries the given parsers in order, returning the result of the first one to succeed.
- * Fails if none of the given parsers succeed.
+ * Fails with the error message of the last parser, if none of the given parsers succeed.
  */
 inline fun <T> ParserState.oneOf(vararg ps: Parser<T>): T {
     val savedPos = position
@@ -96,14 +96,38 @@ inline fun <T> ParserState.oneOf(vararg ps: Parser<T>): T {
             position = savedPos
         }
     }
-    val alts = ps.joinToString { it.toString() }
-    fail("Expected one of $alts, but none of them matched.")
+    propagateLastFailure()
+}
+
+/**
+ * Tries the given parsers in order, returning the result of the first one to succeed.
+ * Fails if none of the given parsers succeed.
+ *
+ * [ps] is a list of label-parser pairs, where the labels are used to construct the error message in case of failure.
+ */
+inline fun <T> ParserState.oneOf(vararg ps: Pair<String, Parser<T>>): T {
+    val savedPos = position
+    for (p in ps) {
+        try {
+            return (p.second)()
+        } catch (e: FailException) {
+            /* Try the next one */
+            position = savedPos
+        }
+    }
+    val alts = ps.joinToString { (it.first) }
+    fail("Expected one of $alts.")
 }
 
 /**
  * Creates a [ParserState.oneOf] parser.
  */
 inline fun <T> oneOf(vararg ps: Parser<T>) = parser { oneOf(*ps) }
+
+/**
+ * Creates a [ParserState.oneOf] parser.
+ */
+inline fun <T> oneOf(vararg ps: Pair<String, Parser<T>>) = parser { oneOf(*ps) }
 
 /**
  * Parses one or more instances of [p], separated by [separator], and returns the elements with their respective
@@ -265,3 +289,16 @@ inline fun <T> ParserState.tryParse(p: Parser<T>): T? {
  */
 inline fun <T> tryParse(crossinline p: Parser<T>): Parser<T?> =
     parser { tryParse(p) }
+
+/**
+ * Replaces the error message of the receiver parser with [msg].
+ * Position information is unaffected.
+ */
+inline fun <T> Parser<T>.failsWith(msg: String): Parser<T> =
+    parser {
+        try {
+            this@failsWith()
+        } catch (e: FailException) {
+            propagateLastFailure(msg)
+        }
+    }
