@@ -20,6 +20,7 @@ $dokka.location:cc.ekblad.konbini//char/cc.ekblad.konbini.ParserState#kotlin.Cha
 $dokka.location:cc.ekblad.konbini//decimal/#/PointingToDeclaration/konbini/cc.ekblad.konbini/decimal.html
 $dokka.location:cc.ekblad.konbini//doubleQuotedString/#/PointingToDeclaration/konbini/cc.ekblad.konbini/double-quoted-string.html
 $dokka.location:cc.ekblad.konbini//fail/#kotlin.String/PointingToDeclaration/konbini/cc.ekblad.konbini/fail.html
+$dokka.location:cc.ekblad.konbini//failsWith/kotlin.Function1[cc.ekblad.konbini.ParserState,TypeParam(bounds=[kotlin.Any?])]#kotlin.String/PointingToDeclaration/konbini/cc.ekblad.konbini/fails-with.html
 $dokka.location:cc.ekblad.konbini//integer/#/PointingToDeclaration/konbini/cc.ekblad.konbini/integer.html
 $dokka.location:cc.ekblad.konbini//many/#kotlin.Function1[cc.ekblad.konbini.ParserState,TypeParam(bounds=[kotlin.Any?])]/PointingToDeclaration/konbini/cc.ekblad.konbini/many.html
 $dokka.location:cc.ekblad.konbini//many/cc.ekblad.konbini.ParserState#kotlin.Function1[cc.ekblad.konbini.ParserState,TypeParam(bounds=[kotlin.Any?])]/PointingToDeclaration/konbini/cc.ekblad.konbini/many.html
@@ -27,7 +28,9 @@ $dokka.location:cc.ekblad.konbini//many1/#kotlin.Function1[cc.ekblad.konbini.Par
 $dokka.location:cc.ekblad.konbini//many1/cc.ekblad.konbini.ParserState#kotlin.Function1[cc.ekblad.konbini.ParserState,TypeParam(bounds=[kotlin.Any?])]/PointingToDeclaration/konbini/cc.ekblad.konbini/many1.html
 $dokka.location:cc.ekblad.konbini//map/kotlin.Function1[cc.ekblad.konbini.ParserState,TypeParam(bounds=[kotlin.Any?])]#kotlin.Function1[TypeParam(bounds=[kotlin.Any?]),TypeParam(bounds=[kotlin.Any?])]/PointingToDeclaration/konbini/cc.ekblad.konbini/map.html
 $dokka.location:cc.ekblad.konbini//oneOf/#kotlin.Array[kotlin.Function1[cc.ekblad.konbini.ParserState,TypeParam(bounds=[kotlin.Any?])]]/PointingToDeclaration/konbini/cc.ekblad.konbini/one-of.html
+$dokka.location:cc.ekblad.konbini//oneOf/#kotlin.Array[kotlin.Pair[kotlin.String,kotlin.Function1[cc.ekblad.konbini.ParserState,TypeParam(bounds=[kotlin.Any?])]]]/PointingToDeclaration/konbini/cc.ekblad.konbini/one-of.html
 $dokka.location:cc.ekblad.konbini//oneOf/cc.ekblad.konbini.ParserState#kotlin.Array[kotlin.Function1[cc.ekblad.konbini.ParserState,TypeParam(bounds=[kotlin.Any?])]]/PointingToDeclaration/konbini/cc.ekblad.konbini/one-of.html
+$dokka.location:cc.ekblad.konbini//oneOf/cc.ekblad.konbini.ParserState#kotlin.Array[kotlin.Pair[kotlin.String,kotlin.Function1[cc.ekblad.konbini.ParserState,TypeParam(bounds=[kotlin.Any?])]]]/PointingToDeclaration/konbini/cc.ekblad.konbini/one-of.html
 $dokka.location:cc.ekblad.konbini//parse/kotlin.Function1[cc.ekblad.konbini.ParserState,TypeParam(bounds=[kotlin.Any?])]#kotlin.String#kotlin.Boolean/PointingToDeclaration/konbini/cc.ekblad.konbini/parse.html
 $dokka.location:cc.ekblad.konbini//parseToEnd/kotlin.Function1[cc.ekblad.konbini.ParserState,TypeParam(bounds=[kotlin.Any?])]#kotlin.String#kotlin.Boolean/PointingToDeclaration/konbini/cc.ekblad.konbini/parse-to-end.html
 $dokka.location:cc.ekblad.konbini//parser/#kotlin.Function1[cc.ekblad.konbini.ParserState,TypeParam(bounds=[kotlin.Any?])]/PointingToDeclaration/konbini/cc.ekblad.konbini/parser.html
@@ -59,11 +62,14 @@ $dokka.location:cc.ekblad.konbini/ParserResult.Ok/remainingInput/#/PointingToDec
 $dokka.location:cc.ekblad.konbini/ParserResult.Ok/result/#/PointingToDeclaration/konbini/cc.ekblad.konbini/-parser-result/-ok/result.html
 $dokka.location:cc.ekblad.konbini/ParserResult///PointingToDeclaration/konbini/cc.ekblad.konbini/-parser-result/index.html
 $dokka.location:cc.ekblad.konbini/ParserState///PointingToDeclaration/konbini/cc.ekblad.konbini/-parser-state/index.html
+$dokka.location:cc.ekblad.konbini/ParserState/ParserState/#/PointingToDeclaration/konbini/cc.ekblad.konbini/-parser-state/-parser-state.html
 $dokka.location:cc.ekblad.konbini/ParserState/char/#/PointingToDeclaration/konbini/cc.ekblad.konbini/-parser-state/char.html
 $dokka.location:cc.ekblad.konbini/ParserState/eof/#/PointingToDeclaration/konbini/cc.ekblad.konbini/-parser-state/--eof--.html
 $dokka.location:cc.ekblad.konbini/ParserState/fail/#kotlin.String/PointingToDeclaration/konbini/cc.ekblad.konbini/-parser-state/fail.html
+$dokka.location:cc.ekblad.konbini/ParserState/input/#/PointingToDeclaration/konbini/cc.ekblad.konbini/-parser-state/input.html
 $dokka.location:cc.ekblad.konbini/ParserState/next/#/PointingToDeclaration/konbini/cc.ekblad.konbini/-parser-state/next.html
 $dokka.location:cc.ekblad.konbini/ParserState/position/#/PointingToDeclaration/konbini/cc.ekblad.konbini/-parser-state/position.html
+$dokka.location:cc.ekblad.konbini/ParserState/propagateLastFailure/#kotlin.String?/PointingToDeclaration/konbini/cc.ekblad.konbini/-parser-state/propagate-last-failure.html
 $dokka.location:cc.ekblad.konbini/ParserState/regex/#kotlin.text.Regex/PointingToDeclaration/konbini/cc.ekblad.konbini/-parser-state/regex.html
 $dokka.location:cc.ekblad.konbini/ParserState/rest/#/PointingToDeclaration/konbini/cc.ekblad.konbini/-parser-state/rest.html
 $dokka.location:cc.ekblad.konbini/ParserState/string/#kotlin.String/PointingToDeclaration/konbini/cc.ekblad.konbini/-parser-state/string.html
