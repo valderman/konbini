@@ -26,8 +26,14 @@ sealed class ParserResult<in T> {
  * Applies the receiver parser to the given [input].
  * If [skipWhitespace] is true, any whitespace at the beginning of the input is skipped.
  */
-fun <T> Parser<T>.parse(input: String, skipWhitespace: Boolean = false): ParserResult<T> {
-    val state = ParserState().also { it.input = input }
+fun <T> Parser<T>.parse(input: String, skipWhitespace: Boolean = false): ParserResult<T> =
+    parse(input, skipWhitespace, ParserState())
+
+/**
+ * Like [parse], but with a custom parser state.
+ */
+fun <S : ParserState, T> Parser<T>.parse(input: String, skipWhitespace: Boolean = false, state: S): ParserResult<T> {
+    state.input = input
     return try {
         val p = if (skipWhitespace) {
             parser { whitespace() ; this@parse() }
@@ -47,7 +53,17 @@ fun <T> Parser<T>.parse(input: String, skipWhitespace: Boolean = false): ParserR
  * Applies the receiver parser to the given [input].
  * If [ignoreWhitespace] is true, any whitespace at the beginning or end of the input is ignored.
  */
-fun <T> Parser<T>.parseToEnd(input: String, ignoreWhitespace: Boolean = false): ParserResult<T> {
+fun <T> Parser<T>.parseToEnd(input: String, ignoreWhitespace: Boolean = false): ParserResult<T> =
+    parseToEnd(input, ignoreWhitespace, ParserState())
+
+/**
+ * Like [parseToEnd], but with a custom parser state.
+ */
+fun <S : ParserState, T> Parser<T>.parseToEnd(
+    input: String,
+    ignoreWhitespace: Boolean = false,
+    state: S
+): ParserResult<T> {
     val p = parser {
         val result = this@parseToEnd()
         if (ignoreWhitespace) {
@@ -56,5 +72,5 @@ fun <T> Parser<T>.parseToEnd(input: String, ignoreWhitespace: Boolean = false): 
         eof()
         result
     }
-    return p.parse(input, ignoreWhitespace)
+    return p.parse(input, ignoreWhitespace, state)
 }

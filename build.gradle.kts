@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "cc.ekblad"
-version = "0.1.1"
+version = "0.1.2"
 
 repositories {
     mavenCentral()

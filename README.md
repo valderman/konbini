@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-    implementation("cc.ekblad.konbini:konbini:0.1.1")
+    implementation("cc.ekblad.konbini:konbini:0.1.2")
 }
 ```
 
